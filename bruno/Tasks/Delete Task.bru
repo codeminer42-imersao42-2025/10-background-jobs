@@ -1,0 +1,15 @@
+meta {
+  name: Delete Task
+  type: http
+  seq: 4
+}
+
+delete {
+  url: http://localhost:8080/tasks/:taskId
+  body: none
+  auth: none
+}
+
+params:path {
+  taskId: 2
+}

@@ -1,0 +1,25 @@
+meta {
+  name: Assign Task
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/tasks/:taskId/assign
+  body: json
+  auth: none
+}
+
+params:path {
+  taskId: 1
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+body:json {
+  {
+    "to": "1"
+  }
+}

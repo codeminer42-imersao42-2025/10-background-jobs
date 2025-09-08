@@ -1,0 +1,21 @@
+meta {
+  name: Update Task
+  type: http
+  seq: 5
+}
+
+patch {
+  url: http://localhost:8080/tasks/1
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+body:json {
+  {
+    "status": "IN_PROGRESS"
+  }
+}

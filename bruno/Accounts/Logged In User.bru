@@ -1,0 +1,15 @@
+meta {
+  name: Logged In User
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:8080/accounts/self
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
