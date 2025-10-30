@@ -2,6 +2,7 @@ import type { RouteHandler } from "fastify";
 import { Task } from "../../models/task.ts";
 import { Account } from "../../models/account.ts";
 import { taskSerializer } from "../../serializers/task-serializer.ts";
+import { emailQueue } from "../../jobs/queue.ts";
 
 export const assignTaskHandler: RouteHandler<{
   Body: { to: string };
@@ -31,7 +32,20 @@ export const assignTaskHandler: RouteHandler<{
   // When assigning a task to a different account, send an
   // email to the account which the task was assigned to
   if (account.id !== request.user.sub) {
-    // TODO: Send an email to the target account that a new task was assigned to them
+    const mail = {
+      from: "noreply@codeminer42.com",
+      to: account.email,
+      subject: "Task assigned to you",
+      text: `
+      Hello, ${account.name}!
+
+      ${request.user.email} have assigned the task "${task.title}" to you.
+      `.trim(),
+    };
+
+    await emailQueue.add(`task-assigned - ${account.email}`, mail, {
+      attempts: 5,
+    });
   }
 
   return reply
